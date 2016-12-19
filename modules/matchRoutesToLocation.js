@@ -8,13 +8,14 @@ const mergePatterns = (a, b) => {
 
 const matchRoutesToLocation = (routes, location, matchedRoutes=[], params={}, parentPattern='') => {
   routes.forEach((route) => {
-    const nestedPattern = mergePatterns(parentPattern, route.pattern)
-    const match = matchPattern(nestedPattern, location)
+    const { exactly = false } = route
+
+    const nestedPattern = mergePatterns(parentPattern, route.pattern || '')
+    const match = !route.pattern ? true : matchPattern(nestedPattern, location, exactly)
 
     if (match) {
-      if (route.exactly ? match.isExact : true) {
-        matchedRoutes.push(route)
-      }
+      matchedRoutes.push(route)
+
       if (match.params) {
         Object.keys(match.params).forEach(key => params[key] = match.params[key])
       }
