@@ -54,10 +54,14 @@ Routes are objects with the same properties as `<Match>` with the addition of `r
 
 ```js
 const routes = [
-  { pattern: '/',
-    name: 'root',
+  { name: 'root',
     component: Root,
     routes: [
+      { pattern: '/',
+        exactly: true,
+        name: 'home',
+        component: Home
+      },
       { pattern: '/child/:id',
         name: 'child',
         component: Child
@@ -165,4 +169,3 @@ const routes = [
 ### `<NamedRedirect>`
 
 Not implemented.
-
