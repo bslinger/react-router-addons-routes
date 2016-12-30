@@ -11,7 +11,10 @@ const matchRoutesToLocation = (routes, location, matchedRoutes=[], params={}, pa
     const { exactly = false } = route
 
     const nestedPattern = mergePatterns(parentPattern, route.pattern || '')
-    const match = !route.pattern ? true : matchPattern(nestedPattern, location, exactly)
+
+    const withoutTrailing = nestedPattern[nestedPattern.length - 1] === '/' ? nestedPattern.slice(0, nestedPattern.length-1) : nestedPattern;
+
+    const match = !route.pattern ? true : (matchPattern(withoutTrailing, location, exactly) || matchPattern(withoutTrailing + '/', location, exactly));
 
     if (match) {
       matchedRoutes.push(route)
